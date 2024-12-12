@@ -137,25 +137,35 @@ void cpu::SED() {
 }
 
 void cpu::TYA() {
+    accumulator = y_reg;
+    setZN(accumulator);
     std::cout << "[NEMU] INFO: TYA" << std::endl;
 }
 
 void cpu::CLV() {
+    status.V = false;
     std::cout << "[NEMU] INFO: CLV" << std::endl;
 }
 
 void cpu::TXA() {
+    accumulator = x_reg;
+    setZN(accumulator);
     std::cout << "[NEMU] INFO: TXA" << std::endl;
 }
 
 void cpu::TXS() {
+    stack_pointer = x_reg;
     std::cout << "[NEMU] INFO: TXS" << std::endl;
 }
 
 void cpu::TAX() {
+    x_reg = accumulator;
+    setZN(x_reg);
     std::cout << "[NEMU] INFO: TAX" << std::endl;
 }
 
 void cpu::TSX() {
+    x_reg = stack_pointer;
+    setZN(x_reg);
     std::cout << "[NEMU] INFO: TSX" << std::endl;
 }

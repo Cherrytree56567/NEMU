@@ -39,28 +39,28 @@ uint8_t cpu::pullStack() {
 }
 
 void cpu::InterruptSeq(Interrupt type) {
-    if (status.I && type != NMI && type != BRK){
+    if (status.I && type != NMI && type != Interrupt::BRK){
         return;
     }
 
-    if (type == BRK) {
+    if (type == Interrupt::BRK) {
         program_counter += 1;
     }
 
     pushStack(program_counter >> 8);
     pushStack(program_counter);
 
-    uint8_t flags = status.N << 7 | status.V << 6 | 1 << 5 | (type == BRK) << 4 | status.D << 3 | status.I << 2 | status.Z << 1 | status.C;
+    uint8_t flags = status.N << 7 | status.V << 6 | 1 << 5 | (type == Interrupt::BRK) << 4 | status.D << 3 | status.I << 2 | status.Z << 1 | status.C;
     pushStack(flags);
 
     status.I = true;
 
     switch (type) {
-        case IRQ:
-        case BRK:
+        case Interrupt::IRQ:
+        case Interrupt::BRK:
             program_counter = readAddr(IRQVector);
             break;
-        case NMI:
+        case Interrupt::NMI:
             program_counter = readAddr(NMIVector);
             break;
     }
@@ -122,140 +122,89 @@ void cpu::interrupt(Interrupt type) {
 
 bool cpu::execute(uint8_t opcode) {
     switch (opcode) {
-            case NOP:
+            case 0xEA: // NOP
+                NOP();
                 break;
-            case BRK:
-                interruptSequence(BRK_);
+            case 0x00: // BRK
+                BRK();
                 break;
-            case JSR:
-                //Push address of next instruction - 1, thus r_PC + 1 instead of r_PC + 2
-                //since r_PC and r_PC + 1 are address of subroutine
-                pushStack(static_cast<Byte>((r_PC + 1) >> 8));
-                pushStack(static_cast<Byte>(r_PC + 1));
-                r_PC = readAddress(r_PC);
+            case 0x20: // JSR
+                JSR();
                 break;
-            case RTS:
-                r_PC = pullStack();
-                r_PC |= pullStack() << 8;
-                ++r_PC;
+            case 0x60: // RTS
+                RTS();
                 break;
-            case RTI:
-                {
-                    Byte flags = pullStack();
-                    f_N = flags & 0x80;
-                    f_V = flags & 0x40;
-                    f_D = flags & 0x8;
-                    f_I = flags & 0x4;
-                    f_Z = flags & 0x2;
-                    f_C = flags & 0x1;
-                }
-                r_PC = pullStack();
-                r_PC |= pullStack() << 8;
+            case 0x40: // RTI
+                RTI();
                 break;
-            case JMP:
-                r_PC = readAddress(r_PC);
+            case 0x4C: // JMP
+                JMP();
                 break;
-            case JMPI:
-                {
-                    Address location = readAddress(r_PC);
-                    //6502 has a bug such that the when the vector of anindirect address begins at the last byte of a page,
-                    //the second byte is fetched from the beginning of that page rather than the beginning of the next
-                    //Recreating here:
-                    Address Page = location & 0xff00;
-                    r_PC = m_bus.read(location) |
-                           m_bus.read(Page | ((location + 1) & 0xff)) << 8;
-                }
+            case 0x6C: // JMPI
+                JMPI();
                 break;
-            case PHP:
-                {
-                    Byte flags = f_N << 7 |
-                                 f_V << 6 |
-                                   1 << 5 | //supposed to always be 1
-                                   1 << 4 | //PHP pushes with the B flag as 1, no matter what
-                                 f_D << 3 |
-                                 f_I << 2 |
-                                 f_Z << 1 |
-                                 f_C;
-                    pushStack(flags);
-                }
+            case 0x08: // PHP
+                PHP();
                 break;
-            case PLP:
-                {
-                    Byte flags = pullStack();
-                    f_N = flags & 0x80;
-                    f_V = flags & 0x40;
-                    f_D = flags & 0x8;
-                    f_I = flags & 0x4;
-                    f_Z = flags & 0x2;
-                    f_C = flags & 0x1;
-                }
+            case 0x28: // PLP
+                PLP();
                 break;
-            case PHA:
-                pushStack(r_A);
+            case 0x48: // PHA
+                PHA();
                 break;
-            case PLA:
-                r_A = pullStack();
-                setZN(r_A);
+            case 0x68: // PLA
+                PLA();
                 break;
-            case DEY:
-                --r_Y;
-                setZN(r_Y);
+            case 0x88: // DEY
+                DEY();
                 break;
-            case DEX:
-                --r_X;
-                setZN(r_X);
+            case 0xCA: // DEX
+                DEX();
                 break;
-            case TAY:
-                r_Y = r_A;
-                setZN(r_Y);
+            case 0xa8: // TAY
+                TAY();
                 break;
-            case INY:
-                ++r_Y;
-                setZN(r_Y);
+            case 0xc8: // INY
+                INY();
                 break;
-            case INX:
-                ++r_X;
-                setZN(r_X);
+            case 0xE8: // INX
+                INX();
                 break;
-            case CLC:
-                f_C = false;
+            case 0x18: // CLC
+                CLC();
                 break;
-            case SEC:
-                f_C = true;
+            case 0x38: // SEC
+                SEC();
                 break;
-            case CLI:
-                f_I = false;
+            case 0x58: // CLI
+                CLI();
                 break;
-            case SEI:
-                f_I = true;
+            case 0x78: // SEI
+                SEI();
                 break;
-            case CLD:
-                f_D = false;
+            case 0xD8: // CLD
+                CLD();
                 break;
-            case SED:
-                f_D = true;
+            case 0xF8: // SED
+                SED();
                 break;
-            case TYA:
-                r_A = r_Y;
-                setZN(r_A);
+            case 0x98: // TYA
+                TYA();
                 break;
-            case CLV:
-                f_V = false;
+            case 0xB8: // CLV
+                CLV();
                 break;
-            case TXA:
-                r_A = r_X;
-                setZN(r_A);
+            case 0x8A: // TXA
+                TXA();
                 break;
-            case TXS:
-                r_SP = r_X;
+            case 0x9A: // TXS
+                TXS();
                 break;
-            case TAX:
-                r_X = r_A;
-                setZN(r_X);
+            case 0xAA: // TAX
+                TAX();
                 break;
-            case TSX:
-                r_X = r_SP;
-                setZN(r_X);
+            case 0xBA: // TSX
+                TSX();
                 break;
             default:
                 return false;
