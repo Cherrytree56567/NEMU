@@ -169,3 +169,142 @@ void cpu::TSX() {
     setZN(x_reg);
     std::cout << "[NEMU] INFO: TSX" << std::endl;
 }
+
+void cpu::BNH() {
+    int8_t offset = Bus->read(program_counter++);
+    ++skipCycles;
+    auto newPC = static_cast<uint16_t>(program_counter + offset);
+    setPageCrossed(program_counter, newPC, 2);
+    program_counter = newPC;
+}
+
+void cpu::ORA(uint16_t loc) {
+    accumulator |= Bus->read(loc);
+    setZN(accumulator);
+}
+
+void cpu::AND(uint16_t loc) {
+    accumulator &= Bus->read(loc);
+    setZN(accumulator);
+}
+
+void cpu::EOR(uint16_t loc) {
+    accumulator ^= Bus->read(loc);
+    setZN(accumulator);
+}
+
+void cpu::ADC(uint16_t loc) {
+    uint8_t operand = Bus->read(loc);
+    uint16_t sum = accumulator + operand + status.C;
+    status.C = sum & 0x100;
+    status.V = (accumulator ^ sum) & (operand ^ sum) & 0x80;
+    accumulator = static_cast<uint8_t>(sum);
+    setZN(accumulator);
+}
+
+void cpu::STA(uint16_t loc) {
+    Bus->write(loc, accumulator);
+}
+
+void cpu::LDA(uint16_t loc) {
+    accumulator = Bus->read(loc);
+    setZN(accumulator);
+}
+
+void cpu::SBC(uint16_t loc) {
+    uint16_t subtrahend = Bus->read(loc), diff = accumulator - subtrahend - !status.C;
+    status.C = !(diff & 0x100);
+    status.V = (accumulator ^ diff) & (~subtrahend ^ diff) & 0x80;
+    accumulator = diff;
+    setZN(diff);
+}
+
+void cpu::CMP(uint16_t loc) {
+    std::uint16_t diff = accumulator - Bus->read(loc);
+    status.C = !(diff & 0x100);
+    setZN(diff);
+}
+
+void cpu::ROL(uint16_t loc, int op, int addr_mode, uint16_t operand) {
+    uint16_t operand = 0;
+    if (addr_mode == 0x2) {
+        auto prev_C = status.C;
+        status.C = accumulator & 0x80;
+        accumulator <<= 1;
+        accumulator = accumulator | (prev_C && (op == 0x1));
+        setZN(accumulator);
+    } else {
+        auto prev_C = status.C;
+        operand = Bus->read(loc);
+        status.C = operand & 0x80;
+        operand = operand << 1 | (prev_C && (op == 0x1));
+        setZN(operand);
+        Bus->write(loc, operand);
+    }
+}
+
+void cpu::ROR(uint16_t loc, int op, int addr_mode, uint16_t operand) {
+    if (addr_mode == 0x2) {
+        auto prev_C = status.C;
+        status.C = accumulator & 1;
+        accumulator >>= 1;
+        accumulator = accumulator | (prev_C && (op == 0x3)) << 7;
+        setZN(accumulator);
+    } else {
+        auto prev_C = status.C;
+        operand = Bus->read(loc);
+        status.C = operand & 1;
+        operand = operand >> 1 | (prev_C && (op == 0x3)) << 7;
+        setZN(operand);
+        Bus->write(loc, operand);
+    }
+}
+
+void cpu::STX(uint16_t loc, int op, int addr_mode, uint16_t operand) {
+    Bus->write(loc, x_reg);
+}
+
+void cpu::LDX(uint16_t loc, int op, int addr_mode, uint16_t operand) {
+    x_reg = Bus->read(loc);
+    setZN(x_reg);
+}
+
+void cpu::DEC(uint16_t loc, int op, int addr_mode, uint16_t operand) {
+    auto tmp = Bus->read(loc) - 1;
+    setZN(tmp);
+    Bus->write(loc, tmp);
+}
+
+void cpu::INC(uint16_t loc, int op, int addr_mode, uint16_t operand) {
+    auto tmp = Bus->read(loc) + 1;
+    setZN(tmp);
+    Bus->write(loc, tmp);
+}
+
+void cpu::BIT(uint16_t loc, uint16_t operand) {
+    operand = Bus->read(loc);
+    status.Z = !(accumulator & operand);
+    status.V = operand & 0x40;
+    status.N = operand & 0x80;
+}
+
+void cpu::STY(uint16_t loc, uint16_t operand) {
+    Bus->write(loc, y_reg);
+}
+
+void cpu::LDY(uint16_t loc, uint16_t operand) {
+    y_reg = Bus->read(loc);
+    setZN(y_reg);
+}
+
+void cpu::CPY(uint16_t loc, uint16_t operand) {
+    std::uint16_t diff = y_reg - Bus->read(loc);
+    status.C = !(diff & 0x100);
+    setZN(diff);
+}
+
+void cpu::CPX(uint16_t loc, uint16_t operand) {
+    std::uint16_t diff = x_reg - Bus->read(loc);
+    status.C = !(diff & 0x100);
+    setZN(diff);
+}

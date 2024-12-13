@@ -47,6 +47,13 @@ static const int OperationCycles[0x100] = {
     2, 5, 0, 0, 0, 4, 6, 0, 2, 4, 0, 0, 0, 4, 7, 0,
 };
 
+enum BranchOnFlag {
+    Negative,
+    Overflow,
+    Carry,
+    Zero
+};
+
 class cpu {
 public:
     cpu(std::shared_ptr<bus> pBus);
@@ -55,8 +62,6 @@ public:
     void reset();
     void reset(uint16_t start_addr);
     void interrupt(Interrupt type);
-
-    bool execute(uint8_t opcode);
     
     uint16_t getProgramCounter() {
         return program_counter;
@@ -70,6 +75,13 @@ private:
     uint8_t pullStack();
 
     void setZN(uint8_t value);
+    void setPageCrossed(uint16_t a, uint16_t b, int inc = 1);
+
+    bool execute(uint8_t opcode);
+    bool executeBranch(uint8_t opcode);
+    bool executeType1(uint8_t opcode);
+    bool executeType2(uint8_t opcode);
+    bool executeType0(uint8_t opcode);
 
     void NOP();
     void BRK();
@@ -99,6 +111,26 @@ private:
     void TXS();
     void TAX();
     void TSX();
+    void BNH();
+    void ORA(uint16_t loc);
+    void AND(uint16_t loc);
+    void EOR(uint16_t loc);
+    void ADC(uint16_t loc);
+    void STA(uint16_t loc);
+    void LDA(uint16_t loc);
+    void SBC(uint16_t loc);
+    void CMP(uint16_t loc);
+    void ROL(uint16_t loc, int op, int addr_mode, uint16_t operand);
+    void ROR(uint16_t loc, int op, int addr_mode, uint16_t operand);
+    void STX(uint16_t loc, int op, int addr_mode, uint16_t operand);
+    void LDX(uint16_t loc, int op, int addr_mode, uint16_t operand);
+    void DEC(uint16_t loc, int op, int addr_mode, uint16_t operand);
+    void INC(uint16_t loc, int op, int addr_mode, uint16_t operand);
+    void BIT(uint16_t loc, uint16_t operand);
+    void STY(uint16_t loc, uint16_t operand);
+    void LDY(uint16_t loc, uint16_t operand);
+    void CPY(uint16_t loc, uint16_t operand);
+    void CPX(uint16_t loc, uint16_t operand);
 
     uint8_t accumulator;
     uint8_t x_reg;
