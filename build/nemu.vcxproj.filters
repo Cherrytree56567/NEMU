@@ -7,6 +7,9 @@
     <ClCompile Include="D:\NEMU\src\cpu\cpu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\NEMU\src\cpu\cpuopcodes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\NEMU\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

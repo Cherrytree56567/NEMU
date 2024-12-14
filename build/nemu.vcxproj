@@ -315,6 +315,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClCompile Include="D:\NEMU\src\bus\bus.cpp" />
     <ClCompile Include="D:\NEMU\src\cpu\cpu.cpp" />
+    <ClCompile Include="D:\NEMU\src\cpu\cpuopcodes.cpp" />
     <ClCompile Include="D:\NEMU\src\main.cpp" />
     <ClCompile Include="D:\NEMU\src\range\range.cpp" />
   </ItemGroup>

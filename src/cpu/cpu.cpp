@@ -254,9 +254,10 @@ bool cpu::executeType1(uint8_t opcode) {
         uint16_t location = 0;
         auto op = (opcode & 0xE0) >> 5;
         switch ((opcode & 0x1C) >> 2) {
-            case 0: // Indexed Indirect X
+            case 0: { // Indexed Indirect X
                 uint8_t zero_addr = x_reg + Bus->read(program_counter++);
                 location = Bus->read(zero_addr & 0xff) | Bus->read((zero_addr + 1) & 0xff) << 8;
+            }
                 break;
             case 1: // ZeroPage
                 location = Bus->read(program_counter++);
@@ -268,12 +269,13 @@ bool cpu::executeType1(uint8_t opcode) {
                 location = readAddr(program_counter);
                 program_counter += 2;
                 break;
-            case 4: // Indirect Y
+            case 4: { // Indirect Y
                 uint8_t zero_addr = Bus->read(program_counter++);
                 location = Bus->read(zero_addr & 0xff) | Bus->read((zero_addr + 1) & 0xff) << 8;
                 if (op != 4)
                     setPageCrossed(location, location + y_reg);
                 location += y_reg;
+            }
                 break;
             case 5: // Indexed X
                 location = (Bus->read(program_counter++) + x_reg) & 0xff;
@@ -348,6 +350,7 @@ bool cpu::executeType2(uint8_t opcode) {
                 program_counter += 2;
                 break;
             case 0x5: // Indexed
+            {
                 location = Bus->read(program_counter++);
                 uint8_t index;
                 if (op == 0x5 || op == 0x4) {
@@ -356,8 +359,10 @@ bool cpu::executeType2(uint8_t opcode) {
                     index = x_reg;
                 }
                 location = (location + index) & 0xff;
+            }
                 break;
             case 0x7: // Absolute Indexed
+            {
                 location = readAddr(program_counter);
                 program_counter += 2;
                 uint8_t index;
@@ -368,6 +373,7 @@ bool cpu::executeType2(uint8_t opcode) {
                 }
                 setPageCrossed(location, location + index);
                 location += index;
+            }
                 break;
             default:
                 return false;
@@ -435,16 +441,16 @@ bool cpu::executeType0(uint8_t opcode) {
                 BIT(location, operand);
                 break;
             case 0x4: // STY
-                
+                STY(location, operand);
                 break;
             case 0x5: // LDY
-                
+                LDY(location, operand);
                 break;
             case 0x6: // CPY
-                
+                CPY(location, operand);
                 break;
             case 0x7: // CPX
-                
+                CPX(location, operand);
                 break;
             default:
                 return false;

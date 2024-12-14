@@ -226,7 +226,6 @@ void cpu::CMP(uint16_t loc) {
 }
 
 void cpu::ROL(uint16_t loc, int op, int addr_mode, uint16_t operand) {
-    uint16_t operand = 0;
     if (addr_mode == 0x2) {
         auto prev_C = status.C;
         status.C = accumulator & 0x80;
