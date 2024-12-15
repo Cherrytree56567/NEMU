@@ -313,6 +313,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="D:\NEMU\src\Cartridge\Cartridge.cpp" />
+    <ClCompile Include="D:\NEMU\src\Mapper\Mapper.cpp" />
     <ClCompile Include="D:\NEMU\src\bus\bus.cpp" />
     <ClCompile Include="D:\NEMU\src\cpu\cpu.cpp" />
     <ClCompile Include="D:\NEMU\src\cpu\cpuopcodes.cpp" />
