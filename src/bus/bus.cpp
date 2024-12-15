@@ -1,6 +1,6 @@
 #include "bus.h"
 
-bus::bus() : ram(Ram.size) {
+bus::bus() : ram(0x800, 0) {
 
 }
 
