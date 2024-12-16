@@ -74,6 +74,7 @@ void cpu::reset() {
 }
 
 void cpu::step() {
+    std::cout << "START: " << program_counter << std::endl;
     ++cycles;
 
     if (skipCycles-- > 1){
@@ -102,6 +103,7 @@ void cpu::step() {
     } else {
         std::cout << "[NEMU] ERROR: Unknown Opcode : " << std::hex << opcode << std::endl;
     }   
+    std::cout << "END: " << program_counter << std::endl;
 }
 
 void cpu::interrupt(Interrupt type) {
@@ -242,8 +244,8 @@ bool cpu::executeBranch(uint8_t opcode) {
             BNH();
         } else {
             ++program_counter;
-            return true;
         }
+        return true;
     }
     return false;
 }

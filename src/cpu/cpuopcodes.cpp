@@ -176,21 +176,25 @@ void cpu::BNH() {
     auto newPC = static_cast<uint16_t>(program_counter + offset);
     setPageCrossed(program_counter, newPC, 2);
     program_counter = newPC;
+    std::cout << "[NEMU] INFO: BNH" << std::endl;
 }
 
 void cpu::ORA(uint16_t loc) {
     accumulator |= Bus->read(loc);
     setZN(accumulator);
+    std::cout << "[NEMU] INFO: ORA" << std::endl;
 }
 
 void cpu::AND(uint16_t loc) {
     accumulator &= Bus->read(loc);
     setZN(accumulator);
+    std::cout << "[NEMU] INFO: AND" << std::endl;
 }
 
 void cpu::EOR(uint16_t loc) {
     accumulator ^= Bus->read(loc);
     setZN(accumulator);
+    std::cout << "[NEMU] INFO: EOR" << std::endl;
 }
 
 void cpu::ADC(uint16_t loc) {
@@ -200,15 +204,18 @@ void cpu::ADC(uint16_t loc) {
     status.V = (accumulator ^ sum) & (operand ^ sum) & 0x80;
     accumulator = static_cast<uint8_t>(sum);
     setZN(accumulator);
+    std::cout << "[NEMU] INFO: ADC" << std::endl;
 }
 
 void cpu::STA(uint16_t loc) {
     Bus->write(loc, accumulator);
+    std::cout << "[NEMU] INFO: STA" << std::endl;
 }
 
 void cpu::LDA(uint16_t loc) {
     accumulator = Bus->read(loc);
     setZN(accumulator);
+    std::cout << "[NEMU] INFO: LDA" << std::endl;
 }
 
 void cpu::SBC(uint16_t loc) {
@@ -217,12 +224,14 @@ void cpu::SBC(uint16_t loc) {
     status.V = (accumulator ^ diff) & (~subtrahend ^ diff) & 0x80;
     accumulator = diff;
     setZN(diff);
+    std::cout << "[NEMU] INFO: SBC" << std::endl;
 }
 
 void cpu::CMP(uint16_t loc) {
     std::uint16_t diff = accumulator - Bus->read(loc);
     status.C = !(diff & 0x100);
     setZN(diff);
+    std::cout << "[NEMU] INFO: CMP" << std::endl;
 }
 
 void cpu::ROL(uint16_t loc, int op, int addr_mode, uint16_t operand) {
@@ -240,6 +249,7 @@ void cpu::ROL(uint16_t loc, int op, int addr_mode, uint16_t operand) {
         setZN(operand);
         Bus->write(loc, operand);
     }
+    std::cout << "[NEMU] INFO: ROL" << std::endl;
 }
 
 void cpu::ROR(uint16_t loc, int op, int addr_mode, uint16_t operand) {
@@ -257,27 +267,32 @@ void cpu::ROR(uint16_t loc, int op, int addr_mode, uint16_t operand) {
         setZN(operand);
         Bus->write(loc, operand);
     }
+    std::cout << "[NEMU] INFO: ROR" << std::endl;
 }
 
 void cpu::STX(uint16_t loc, int op, int addr_mode, uint16_t operand) {
     Bus->write(loc, x_reg);
+    std::cout << "[NEMU] INFO: STX" << std::endl;
 }
 
 void cpu::LDX(uint16_t loc, int op, int addr_mode, uint16_t operand) {
     x_reg = Bus->read(loc);
     setZN(x_reg);
+    std::cout << "[NEMU] INFO: LDX" << std::endl;
 }
 
 void cpu::DEC(uint16_t loc, int op, int addr_mode, uint16_t operand) {
     auto tmp = Bus->read(loc) - 1;
     setZN(tmp);
     Bus->write(loc, tmp);
+    std::cout << "[NEMU] INFO: DEC" << std::endl;
 }
 
 void cpu::INC(uint16_t loc, int op, int addr_mode, uint16_t operand) {
     auto tmp = Bus->read(loc) + 1;
     setZN(tmp);
     Bus->write(loc, tmp);
+    std::cout << "[NEMU] INFO: INC" << std::endl;
 }
 
 void cpu::BIT(uint16_t loc, uint16_t operand) {
@@ -285,25 +300,30 @@ void cpu::BIT(uint16_t loc, uint16_t operand) {
     status.Z = !(accumulator & operand);
     status.V = operand & 0x40;
     status.N = operand & 0x80;
+    std::cout << "[NEMU] INFO: BIT" << std::endl;
 }
 
 void cpu::STY(uint16_t loc, uint16_t operand) {
     Bus->write(loc, y_reg);
+    std::cout << "[NEMU] INFO: STY" << std::endl;
 }
 
 void cpu::LDY(uint16_t loc, uint16_t operand) {
     y_reg = Bus->read(loc);
     setZN(y_reg);
+    std::cout << "[NEMU] INFO: LDY" << std::endl;
 }
 
 void cpu::CPY(uint16_t loc, uint16_t operand) {
     std::uint16_t diff = y_reg - Bus->read(loc);
     status.C = !(diff & 0x100);
     setZN(diff);
+    std::cout << "[NEMU] INFO: CPY" << std::endl;
 }
 
 void cpu::CPX(uint16_t loc, uint16_t operand) {
     std::uint16_t diff = x_reg - Bus->read(loc);
     status.C = !(diff & 0x100);
     setZN(diff);
+    std::cout << "[NEMU] INFO: CPX" << std::endl;
 }

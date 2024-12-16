@@ -63,6 +63,11 @@ public:
     void reset(uint16_t start_addr);
     void reset();
     void interrupt(Interrupt type);
+
+    void skipDMACycles() {
+        skipCycles += 513;
+        skipCycles += (cycles & 1);
+    }
     
     uint16_t getProgramCounter() {
         return program_counter;

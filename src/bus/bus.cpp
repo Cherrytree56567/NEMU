@@ -23,6 +23,7 @@ uint8_t bus::read(uint16_t addr) {
                 return (it -> second)();
             } else {
                 std::cout << "[NEMU] Error: No read callback registered for I/O register at: " << std::hex << +addr << std::endl;
+                return 0;
             }
         } else {
             std::cout << "[NEMU] WARNING: UNKNOWN ACCESS to PPU and IO : " << addr << ".\n";
@@ -46,7 +47,12 @@ void bus::write(uint16_t addr, uint8_t val) {
         if (addr < 0x4000) { // PPU and Mirrored PPU
             std::cout << "[NEMU] WARNING: PPU is not implemented yet : " << addr << ".\n";
         } else if (addr < 0x4018 && addr >= 0x4014) { // IO
-            std::cout << "[NEMU] WARNING: IO is not implemented yet : " << addr << ".\n";
+            auto it = writeCallbacks.find(static_cast<IORegisters>(addr));
+            if (it != writeCallbacks.end()) {
+                (it -> second)(val);
+            } else {
+                std::cout << "[NEMU] Error: No write callback registered for I/O register at: " << std::hex << +addr << std::endl;
+            }
         } else {
             std::cout << "[NEMU] WARNING: UNKNOWN ACCESS to PPU and IO : " << addr << ".\n";
         }
