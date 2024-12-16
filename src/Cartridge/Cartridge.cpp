@@ -1,4 +1,4 @@
-#include "Cartridge.h"
+#include "cartridge.h"
 
 Cartridge::Cartridge(std::string path) {
     std::ifstream rom(path, std::ios_base::binary | std::ios_base::in);

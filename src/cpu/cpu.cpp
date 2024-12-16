@@ -21,10 +21,6 @@ void cpu::reset(uint16_t start_addr) {
     stack_pointer = 0xfd;
 }
 
-void cpu::reset() {
-    reset(readAddr(ResetVector));
-}
-
 uint16_t cpu::readAddr(uint16_t addr) {
     return Bus->read(addr) | Bus->read(addr + 1) << 8;
 }
@@ -73,8 +69,12 @@ void cpu::setZN(uint8_t value) {
     status.N = value & 0x80;
 }
 
+void cpu::reset() {
+    reset(readAddr(ResetVector));
+}
+
 void cpu::step() {
-    cycles += 1;
+    ++cycles;
 
     if (skipCycles-- > 1){
         return;
@@ -95,7 +95,6 @@ void cpu::step() {
     }
 
     uint16_t opcode = Bus->read(program_counter++);
-
     auto CycleLength = OperationCycles[opcode];
 
     if (CycleLength && (execute(opcode) || executeBranch(opcode) || executeType1(opcode) || executeType2(opcode) || executeType0(opcode))) {

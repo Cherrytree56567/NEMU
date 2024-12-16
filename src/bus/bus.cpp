@@ -1,7 +1,13 @@
 #include "bus.h"
 
-bus::bus() : ram(0x800, 0) {
+bus::bus(std::shared_ptr<Mapper> map) : ram(0x800, 0), mapper(map) {
+    if (!mapper) {
+        std::cout << "[NEMU] Error: Mapper pointer is null.\n";
+    }
 
+    if (mapper->hasExtendedRAM()) {
+        extendedRAM.resize(0x2000);
+    }
 }
 
 uint8_t bus::read(uint16_t addr) {
@@ -12,8 +18,12 @@ uint8_t bus::read(uint16_t addr) {
             std::cout << "[NEMU] WARNING: PPU is not implemented yet : " << addr << ".\n";
             return 0;
         } else if (addr < 0x4018 && addr >= 0x4014) { // IO
-            std::cout << "[NEMU] WARNING: IO is not implemented yet : " << addr << ".\n";
-            return 0;
+            auto it = readCallbacks.find(static_cast<IORegisters>(addr));
+            if (it != readCallbacks.end()) {
+                return (it -> second)();
+            } else {
+                std::cout << "[NEMU] Error: No read callback registered for I/O register at: " << std::hex << +addr << std::endl;
+            }
         } else {
             std::cout << "[NEMU] WARNING: UNKNOWN ACCESS to PPU and IO : " << addr << ".\n";
             return 0;
@@ -21,24 +31,66 @@ uint8_t bus::read(uint16_t addr) {
     } else if (addr < 0x6000) { // Expansion ROM
         std::cout << "[NEMU] WARNING: Expansion ROM is not implemented yet : " << addr << ".\n";
     } else if (addr < 0x8000) { // Extended RAM
-        std::cout << "[NEMU] WARNING: Extended RAM is not implemented yet : " << addr << ".\n";
+        if (mapper->hasExtendedRAM()) {
+            return extendedRAM[addr - 0x6000];
+        }
     } else { // PRG
-        std::cout << "[NEMU] WARNING: PRG is not implemented yet : " << addr << ".\n";
+        return mapper->readPRG(addr);
     }
 }
 
 void bus::write(uint16_t addr, uint8_t val) {
-    if (addr < 0x2000) {
+    if (addr < 0x2000) { // RAM
         ram[addr & Ram.end] = val;
-    } else if ((addr > (PPU.start - 1)) || (addr < (PPU.end + 1))) {
-        std::cout << "[NEMU] WARNING: PPU is not implemented yet : " << addr << ".\n";
-    } else if ((addr > (PPU1.start - 1)) || (addr < (PPU1.end + 1))) {
-        std::cout << "[NEMU] WARNING: PPU Mirror is not implemented yet : " << addr << ".\n";
-    } else if ((addr > (APU.start - 1)) || (addr < (APU.end + 1))) {
-        std::cout << "[NEMU] WARNING: APU is not implemented yet : " << addr << ".\n";
-    } else if ((addr > (APUDISB.start - 1)) || (addr < (APUDISB.end + 1))) {
-        std::cout << "[NEMU] WARNING: APU Disabled is not implemented yet : " << addr << ".\n";
-    } else if ((addr > (Cartridge.start - 1)) || (addr < (Cartridge.end + 1))) {
-        std::cout << "[NEMU] WARNING: Cartridge Disabled is not implemented yet : " << addr << ".\n";
+    } else if (addr < 0x4020) { // PPU and IO 
+        if (addr < 0x4000) { // PPU and Mirrored PPU
+            std::cout << "[NEMU] WARNING: PPU is not implemented yet : " << addr << ".\n";
+        } else if (addr < 0x4018 && addr >= 0x4014) { // IO
+            std::cout << "[NEMU] WARNING: IO is not implemented yet : " << addr << ".\n";
+        } else {
+            std::cout << "[NEMU] WARNING: UNKNOWN ACCESS to PPU and IO : " << addr << ".\n";
+        }
+    } else if (addr < 0x6000) { // Expansion ROM
+        std::cout << "[NEMU] WARNING: Expansion ROM is not implemented yet : " << addr << ".\n";
+    } else if (addr < 0x8000) { // Extended RAM
+        if (mapper->hasExtendedRAM()) {
+            extendedRAM[addr - 0x6000] = val;
+        }
+    } else { // PRG
+        mapper->writePRG(addr, val);
     }
+}
+
+bool bus::setWriteCallback(IORegisters reg, std::function<void(uint8_t)> callback) {
+    if (!callback) {
+        std::cout << "[NEMU] Error: Callback argument is null\n";
+        return false;
+    }
+    return writeCallbacks.emplace(reg, callback).second;
+}
+
+bool bus::setReadCallback(IORegisters reg, std::function<uint8_t(void)> callback) {
+    if (!callback) {
+        std::cout << "[NEMU] Error: Callback argument is null\n";
+        return false;
+    }
+    return readCallbacks.emplace(reg, callback).second;
+}
+
+const uint8_t* bus::getPagePtr(uint8_t page) {
+    uint16_t addr = page << 8;
+    if (addr < 0x2000) {
+        return &ram[addr & 0x7ff];
+    } else if (addr < 0x4020) {
+        std::cout << "[NEMU] Warning: Unsupported Register address memory pointer has been accessed\n";
+    } else if (addr < 0x6000) {
+        std::cout << "[NEMU] Warning: Unsupported Expansion ROM has been accessed.\n";
+    } else if (addr < 0x8000) {
+        if (mapper->hasExtendedRAM()) {
+            return &extendedRAM[addr - 0x6000];
+        }
+    } else {
+        std::cout << "[NEMU] Error: Unknown DMA request: " << std::hex << "0x" << +addr << " (" << +page << ")" << std::dec << std::endl;
+    }
+    return nullptr;
 }

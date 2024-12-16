@@ -7,6 +7,9 @@
     <ClCompile Include="D:\NEMU\src\Mapper\Mapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\NEMU\src\Mapper\NROM\NROM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\NEMU\src\bus\bus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

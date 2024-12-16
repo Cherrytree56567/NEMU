@@ -5,7 +5,6 @@
 
 #define STACK_STARTING_POINTER 0xFF
 #define NMIVector 0xfffa
-#define ResetVector 0xfffc
 #define IRQVector 0xfffe
 
 struct Status {
@@ -54,13 +53,15 @@ enum BranchOnFlag {
     Zero
 };
 
+const auto ResetVector = 0xfffc;
+
 class cpu {
 public:
     cpu(std::shared_ptr<bus> pBus);
 
     void step();
-    void reset();
     void reset(uint16_t start_addr);
+    void reset();
     void interrupt(Interrupt type);
     
     uint16_t getProgramCounter() {
