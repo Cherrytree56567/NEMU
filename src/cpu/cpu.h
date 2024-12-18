@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdint>
 #include <memory>
+#include <string>
+#include <iomanip>
 #include "../bus/bus.h"
 
 #define STACK_STARTING_POINTER 0xFF
@@ -147,4 +149,5 @@ private:
     int skipCycles;
     int cycles;
     std::shared_ptr<bus> Bus;
+    std::string currentINSTR;
 };

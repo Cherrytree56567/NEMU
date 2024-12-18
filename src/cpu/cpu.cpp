@@ -26,15 +26,12 @@ uint16_t cpu::readAddr(uint16_t addr) {
 }
 
 void cpu::pushStack(uint8_t val) {
-    std::cout << "Push Stack: 0x" << std::hex << val << std::endl;
     Bus->write(0x100 | stack_pointer, val);
     --stack_pointer;
 }
 
 uint8_t cpu::pullStack() {
     uint8_t ss = Bus->read(0x100 | ++stack_pointer); 
-    std::cout << "Pull Stack: 0x" << std::hex << ss << std::endl;
-    std::cout << "STack PTR: 0x" << std::hex << (0x100 | stack_pointer) << std::endl;
     return ss;
 }
 
@@ -78,7 +75,6 @@ void cpu::reset() {
 }
 
 void cpu::step() {
-    std::cout << "" << program_counter << std::endl;
     ++cycles;
 
     if (skipCycles-- > 1){
@@ -105,8 +101,23 @@ void cpu::step() {
     if (CycleLength && (execute(opcode) || executeBranch(opcode) || executeType1(opcode) || executeType2(opcode) || executeType0(opcode))) {
         skipCycles += CycleLength;
     } else {
-        std::cout << "[NEMU] ERROR: Unknown Opcode : " << std::hex << opcode << std::endl;
+        currentINSTR = "UNKN";
+        //std::cout << "[NEMU] ERROR: Unknown Opcode : " << std::hex << opcode << std::endl;
     }
+    
+    std::cout << std::hex << std::uppercase << std::setfill('0')
+              << std::setw(4) << program_counter - 1 << "  "  // Log the current address (in hex)
+              << std::setw(2) << static_cast<int>(opcode) << " "  // Log the opcode byte
+              << std::setw(2) << static_cast<int>(opcode) << " "
+              << std::setw(2) << static_cast<int>(opcode) << " "
+              << currentINSTR << std::string(30 - currentINSTR.size(), ' ')   // Instruction name (currentINSTR)
+              << "A:" << std::setw(2) << static_cast<int>(accumulator)  // Accumulator value
+              << " X:" << std::setw(2) << static_cast<int>(x_reg)
+              << " Y:" << std::setw(2) << static_cast<int>(y_reg)
+              << " P:" << std::setw(2) << static_cast<int>(program_counter)
+              << " SP:" << std::setw(2) << static_cast<int>(stack_pointer)
+              << " PPU: 0, 0"  // Default PPU state
+              << " CYC:" << cycles << std::endl;
 }
 
 void cpu::interrupt(Interrupt type) {

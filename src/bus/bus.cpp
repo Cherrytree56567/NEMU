@@ -15,7 +15,6 @@ bus::bus(std::shared_ptr<Mapper> map, std::shared_ptr<PPU> ppunit) : ram(0x800, 
 }
 
 uint8_t bus::read(uint16_t addr) {
-    std::cout << "BUS READ: 0x" << std::hex << addr << std::endl;
     if (addr < 0x2000) { // RAM
         return ram[addr & 0x7ff];
     } else if (addr < 0x4020) { // PPU and IO 
@@ -51,8 +50,6 @@ uint8_t bus::read(uint16_t addr) {
 }
 
 void bus::write(uint16_t addr, uint8_t val) {
-    std::cout << "BUS WRITE: 0x" << std::hex << addr << std::endl;
-    std::cout << "BUS WRITE VAL: 0x" << std::hex << val << std::endl;
     if (addr < 0x2000) { // RAM
         ram[addr & Ram.end] = val;
     } else if (addr < 0x4020) { // PPU and IO 
