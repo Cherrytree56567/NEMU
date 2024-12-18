@@ -3,30 +3,34 @@
 emulator::emulator(std::string path) {
     pCartridge = std::make_shared<Cartridge>(path);
     pMapper = Mapper::createMapper(static_cast<MapperType>(pCartridge->getMapper()), *pCartridge.get());
-    pBus = std::make_shared<bus>(pMapper);
+    pScreen = std::make_shared<Screen>();
+    pPictureBus = std::make_shared<picturebus>(pMapper);
+    pPpu = std::make_shared<PPU>(pPictureBus, pScreen);
+    pBus = std::make_shared<bus>(pMapper, pPpu);
     pCpu = std::make_shared<cpu>(pBus);
 
-    if(!pBus->setReadCallback(PPUSTATUS, [&]() -> uint8_t { return 0; }) ||
-        !pBus->setReadCallback(PPUDATA, [&]() -> uint8_t { return 0; }) ||
+    if(!pBus->setReadCallback(PPUSTATUS, [&]() -> uint8_t { return pPpu->getStatus(); }) ||
+        !pBus->setReadCallback(PPUDATA, [&]() -> uint8_t { return pPpu->getData(); }) ||
         !pBus->setReadCallback(JOY1, [&]() -> uint8_t { return 0; }) ||
         !pBus->setReadCallback(JOY2, [&]() -> uint8_t { return 0; }) ||
-        !pBus->setReadCallback(OAMDATA, [&]() -> uint8_t { return 0; })) {
+        !pBus->setReadCallback(OAMDATA, [&]() -> uint8_t { return pPpu->getOAMData(); })) {
         std::cout << "[NEMU] Error: Failed to set I/O callbacks.\n";
     } 
 
-    if(!pBus->setWriteCallback(PPUCTRL, [&](uint8_t b) {}) ||
-        !pBus->setWriteCallback(PPUMASK, [&](uint8_t b) {}) ||
-        !pBus->setWriteCallback(OAMADDR, [&](uint8_t b) {}) ||
-        !pBus->setWriteCallback(PPUADDR, [&](uint8_t b) {}) ||
-        !pBus->setWriteCallback(PPUSCROL, [&](uint8_t b) {}) ||
-        !pBus->setWriteCallback(PPUDATA, [&](uint8_t b) {}) ||
-        !pBus->setWriteCallback(OAMDMA, [&](uint8_t b) {DMA(b);}) ||
-        !pBus->setWriteCallback(JOY1, [&](uint8_t b) {}) ||
-        !pBus->setWriteCallback(OAMDATA, [&](uint8_t b) {})) {
+    if(!pBus->setWriteCallback(PPUCTRL, [&](uint8_t b) { pPpu->control(b); }) ||
+        !pBus->setWriteCallback(PPUMASK, [&](uint8_t b) { pPpu->setMask(b); }) ||
+        !pBus->setWriteCallback(OAMADDR, [&](uint8_t b) { pPpu->setOAMAddress(b); }) ||
+        !pBus->setWriteCallback(PPUADDR, [&](uint8_t b) { pPpu->setDataAddress(b); }) ||
+        !pBus->setWriteCallback(PPUSCROL, [&](uint8_t b) { pPpu->setScroll(b); }) ||
+        !pBus->setWriteCallback(PPUDATA, [&](uint8_t b) { pPpu->setData(b); }) ||
+        !pBus->setWriteCallback(OAMDMA, [&](uint8_t b) { DMA(b); }) ||
+        !pBus->setWriteCallback(JOY1, [&](uint8_t b) {  }) ||
+        !pBus->setWriteCallback(OAMDATA, [&](uint8_t b) { pPpu->setOAMData(b); })) {
         std::cout << "[NEMU] Error: Failed to set I/O callbacks.\n";
     }
     
     pCpu->reset();
+    pPpu->reset();
     cycleTimer = std::chrono::high_resolution_clock::now();
     elapsedTime = cycleTimer - cycleTimer;
 }
@@ -44,7 +48,12 @@ void emulator::setVideoScale(float scale) {
 }
 
 bool emulator::loop() {
+    pPpu->step();
+    pPpu->step();
+    pPpu->step();
     pCpu->step();
+
+    pScreen->draw();
     
     /*
     * TODO: Draw here using HTML canvas' and JS via WASM

@@ -3,7 +3,7 @@
 #include "emulator/emulator.h"
 
 int main() {
-    emulator emu("Super Mario Bros. (Japan, USA).nes");
+    emulator emu("D:/NEMU/build/Debug/file.nes");
     while (emu.loop()) {
         
     }

@@ -6,8 +6,12 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+#set(CMAKE_TOOLCHAIN_FILE "emsdk/upstream/emscripten/cmake/Modules/Platform/emscripten.cmake")
+
 file(GLOB_RECURSE SOURCES "src/*/*.cpp" "src/*.cpp" "src/*/*/*.cpp")
 
 add_executable(nemu ${SOURCES})
 
 target_include_directories(nemu PRIVATE src)
+
+#set_target_properties(nemu PROPERTIES LINK_FLAGS "-s WASM=1 -s EXPORTED_FUNCTIONS='_main'")

@@ -26,12 +26,16 @@ uint16_t cpu::readAddr(uint16_t addr) {
 }
 
 void cpu::pushStack(uint8_t val) {
+    std::cout << "Push Stack: 0x" << std::hex << val << std::endl;
     Bus->write(0x100 | stack_pointer, val);
-    stack_pointer -= 1;
+    --stack_pointer;
 }
 
 uint8_t cpu::pullStack() {
-    return Bus->read(0x100 | ++stack_pointer);
+    uint8_t ss = Bus->read(0x100 | ++stack_pointer); 
+    std::cout << "Pull Stack: 0x" << std::hex << ss << std::endl;
+    std::cout << "STack PTR: 0x" << std::hex << (0x100 | stack_pointer) << std::endl;
+    return ss;
 }
 
 void cpu::InterruptSeq(Interrupt type) {
@@ -74,7 +78,7 @@ void cpu::reset() {
 }
 
 void cpu::step() {
-    std::cout << "START: " << program_counter << std::endl;
+    std::cout << "" << program_counter << std::endl;
     ++cycles;
 
     if (skipCycles-- > 1){
@@ -95,15 +99,14 @@ void cpu::step() {
         return;
     }
 
-    uint16_t opcode = Bus->read(program_counter++);
+    uint8_t opcode = Bus->read(program_counter++);
     auto CycleLength = OperationCycles[opcode];
 
     if (CycleLength && (execute(opcode) || executeBranch(opcode) || executeType1(opcode) || executeType2(opcode) || executeType0(opcode))) {
         skipCycles += CycleLength;
     } else {
         std::cout << "[NEMU] ERROR: Unknown Opcode : " << std::hex << opcode << std::endl;
-    }   
-    std::cout << "END: " << program_counter << std::endl;
+    }
 }
 
 void cpu::interrupt(Interrupt type) {
@@ -276,7 +279,7 @@ bool cpu::executeType1(uint8_t opcode) {
                 if (op != 4)
                     setPageCrossed(location, location + y_reg);
                 location += y_reg;
-            }
+                }
                 break;
             case 5: // Indexed X
                 location = (Bus->read(program_counter++) + x_reg) & 0xff;
@@ -411,7 +414,7 @@ bool cpu::executeType2(uint8_t opcode) {
 }
 
 bool cpu::executeType0(uint8_t opcode) {
-    if ((opcode & 0x3) == 0x0) {
+    if ((opcode & 3) == 0x0) {
         uint16_t location = 0;
         switch ((opcode & 0x1C) >> 2) {
             case 0x0: // Immediate

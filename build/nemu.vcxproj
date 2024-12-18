@@ -313,6 +313,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="D:\NEMU\src\Screen\Screen.cpp" />
     <ClCompile Include="D:\NEMU\src\bus\bus.cpp" />
     <ClCompile Include="D:\NEMU\src\cartridge\cartridge.cpp" />
     <ClCompile Include="D:\NEMU\src\cpu\cpu.cpp" />
@@ -321,6 +322,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\NEMU\src\main.cpp" />
     <ClCompile Include="D:\NEMU\src\mapper\mapper.cpp" />
     <ClCompile Include="D:\NEMU\src\mapper\nrom\nrom.cpp" />
+    <ClCompile Include="D:\NEMU\src\picturebus\picturebus.cpp" />
     <ClCompile Include="D:\NEMU\src\ppu\ppu.cpp" />
     <ClCompile Include="D:\NEMU\src\range\range.cpp" />
   </ItemGroup>

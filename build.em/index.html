@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Upload & Start WebAssembly</title>
+</head>
+<body>
+  <h1>Upload a File</h1>
+  <input type="file" id="fileInput" />
+  <button onclick="startWasm()">Upload & Start</button>
+  <canvas id="screenCanvas" width="400" height="400"></canvas>
+  <script src="nemu.js"></script>
+  <script>
+    let uploadedFileContent = null;
+    var ssaaa = false;
+
+    // Handle file upload
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) {
+        alert('Please select a file');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        uploadedFileContent = evt.target.result;
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    };
+
+    async function asyncOperation() {
+      while (true) {
+        await delay(1000);
+        if (ssaaa) {
+          break;
+        }
+      }
+      await run();
+    }
+
+    asyncOperation();
+
+    function startWasm() {
+      if (!uploadedFileContent) {
+        alert('Please upload a file first');
+        return;
+      }
+
+      // Write the uploaded file into Emscripten's virtual file system
+      FS.writeFile('/file.nes', new Uint8Array(uploadedFileContent));
+      console.log('File written to virtual file system');
+        
+      ssaaa = true;
+    }
+  </script>
+  <script>
+    let canvas, ctx;
+
+    // Initialize the canvas rendering context
+    const initCanvas = () => {
+      canvas = document.getElementById('screenCanvas');
+      ctx = canvas.getContext('2d');
+    };
+
+    // Define a function to render the pixel buffer data onto the canvas
+    Module.renderScreen = function(pixelBuffer) {
+      const pixels = JSON.parse(pixelBuffer);
+
+      const imageData = ctx.createImageData(400, 400);
+      for (let i = 0; i < pixels.length; i++) {
+        const color = pixels[i];
+        
+        // Map the color data (r, g, b) into the canvas pixel data
+        imageData.data[i * 4] = color.r;       // Red channel
+        imageData.data[i * 4 + 1] = color.g;   // Green channel
+        imageData.data[i * 4 + 2] = color.b;   // Blue channel
+        imageData.data[i * 4 + 3] = 255;       // Alpha channel (opaque)
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+    };
+
+    initCanvas();
+  </script>
+</body>
+</html>

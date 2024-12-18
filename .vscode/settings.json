@@ -67,6 +67,18 @@
         "forward_list": "cpp",
         "iomanip": "cpp",
         "optional": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "array": "cpp",
+        "bitset": "cpp",
+        "complex": "cpp",
+        "cstdarg": "cpp",
+        "cwctype": "cpp",
+        "deque": "cpp",
+        "execution": "cpp",
+        "filesystem": "cpp",
+        "numeric": "cpp",
+        "queue": "cpp",
+        "stack": "cpp",
+        "variant": "cpp"
     }
 }

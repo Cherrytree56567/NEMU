@@ -1,8 +1,12 @@
 #include "bus.h"
 
-bus::bus(std::shared_ptr<Mapper> map) : ram(0x800, 0), mapper(map) {
+bus::bus(std::shared_ptr<Mapper> map, std::shared_ptr<PPU> ppunit) : ram(0x800, 0), mapper(map), ppu(ppunit) {
     if (!mapper) {
         std::cout << "[NEMU] Error: Mapper pointer is null.\n";
+    }
+
+    if (!ppunit) {
+        std::cout << "[NEMU] Error: PPU pointer is null.\n";
     }
 
     if (mapper->hasExtendedRAM()) {
@@ -11,12 +15,18 @@ bus::bus(std::shared_ptr<Mapper> map) : ram(0x800, 0), mapper(map) {
 }
 
 uint8_t bus::read(uint16_t addr) {
+    std::cout << "BUS READ: 0x" << std::hex << addr << std::endl;
     if (addr < 0x2000) { // RAM
-        return ram[addr & Ram.end];
+        return ram[addr & 0x7ff];
     } else if (addr < 0x4020) { // PPU and IO 
         if (addr < 0x4000) { // PPU and Mirrored PPU
-            std::cout << "[NEMU] WARNING: PPU is not implemented yet : " << addr << ".\n";
-            return 0;
+            auto it = readCallbacks.find(static_cast<IORegisters>(addr & 0x2007));
+                if (it != readCallbacks.end()) {
+                    return (it -> second)();
+                } else {
+                    std::cout << "[NEMU] Error: No read callback registered for I/O register at: " << std::hex << +addr << std::endl;
+                    return 0;
+                }
         } else if (addr < 0x4018 && addr >= 0x4014) { // IO
             auto it = readCallbacks.find(static_cast<IORegisters>(addr));
             if (it != readCallbacks.end()) {
@@ -41,11 +51,18 @@ uint8_t bus::read(uint16_t addr) {
 }
 
 void bus::write(uint16_t addr, uint8_t val) {
+    std::cout << "BUS WRITE: 0x" << std::hex << addr << std::endl;
+    std::cout << "BUS WRITE VAL: 0x" << std::hex << val << std::endl;
     if (addr < 0x2000) { // RAM
         ram[addr & Ram.end] = val;
     } else if (addr < 0x4020) { // PPU and IO 
         if (addr < 0x4000) { // PPU and Mirrored PPU
-            std::cout << "[NEMU] WARNING: PPU is not implemented yet : " << addr << ".\n";
+            auto it = writeCallbacks.find(static_cast<IORegisters>(addr & 0x2007));
+                if (it != writeCallbacks.end()) {
+                    (it -> second)(val);
+                } else {
+                    std::cout << "[NEMU] Error: No write callback registered for I/O register at: " << std::hex << +addr << std::endl;
+                }
         } else if (addr < 0x4018 && addr >= 0x4014) { // IO
             auto it = writeCallbacks.find(static_cast<IORegisters>(addr));
             if (it != writeCallbacks.end()) {

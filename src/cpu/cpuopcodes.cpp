@@ -19,18 +19,20 @@ void cpu::JSR() {
 void cpu::RTS() {
     program_counter = pullStack();
     program_counter |= pullStack() << 8;
-    program_counter++;
+    ++program_counter;
     std::cout << "[NEMU] INFO: RTS" << std::endl;
 }
 
 void cpu::RTI() {
-    uint8_t flags = pullStack();
-    status.N = flags & 0x80;
-    status.V = flags & 0x40;
-    status.D = flags & 0x8;
-    status.I = flags & 0x4;
-    status.Z = flags & 0x2;
-    status.C = flags & 0x1;
+    {
+        uint8_t flags = pullStack();
+        status.N = flags & 0x80;
+        status.V = flags & 0x40;
+        status.D = flags & 0x8;
+        status.I = flags & 0x4;
+        status.Z = flags & 0x2;
+        status.C = flags & 0x1;
+    }
     program_counter = pullStack();
     program_counter |= pullStack() << 8;
     std::cout << "[NEMU] INFO: RTI" << std::endl;
@@ -172,6 +174,7 @@ void cpu::TSX() {
 
 void cpu::BNH() {
     int8_t offset = Bus->read(program_counter++);
+    std::cout << "BNH Offset: " << offset << std::endl;
     ++skipCycles;
     auto newPC = static_cast<uint16_t>(program_counter + offset);
     setPageCrossed(program_counter, newPC, 2);
@@ -295,8 +298,8 @@ void cpu::INC(uint16_t loc, int op, int addr_mode, uint16_t operand) {
     std::cout << "[NEMU] INFO: INC" << std::endl;
 }
 
-void cpu::BIT(uint16_t loc, uint16_t operand) {
-    operand = Bus->read(loc);
+void cpu::BIT(uint16_t loc, uint16_t) {
+    uint8_t operand = Bus->read(loc);
     status.Z = !(accumulator & operand);
     status.V = operand & 0x40;
     status.N = operand & 0x80;
