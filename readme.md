@@ -1,3 +1,2 @@
 # NEMU
-
-A simple NES emulator made in c++
+A simple NES emulator created in c++
