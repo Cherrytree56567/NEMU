@@ -24,7 +24,6 @@ uint8_t bus::read(uint16_t addr) {
                     return (it -> second)();
                 } else {
                     std::cout << "[NEMU] Error: No read callback registered for I/O register at: " << std::hex << +addr << std::endl;
-                    return 0;
                 }
         } else if (addr < 0x4018 && addr >= 0x4014) { // IO
             auto it = readCallbacks.find(static_cast<IORegisters>(addr));
@@ -32,7 +31,6 @@ uint8_t bus::read(uint16_t addr) {
                 return (it -> second)();
             } else {
                 std::cout << "[NEMU] Error: No read callback registered for I/O register at: " << std::hex << +addr << std::endl;
-                return 0;
             }
         } else {
             std::cout << "[NEMU] WARNING: UNKNOWN ACCESS to PPU and IO : " << addr << ".\n";
@@ -47,6 +45,7 @@ uint8_t bus::read(uint16_t addr) {
     } else { // PRG
         return mapper->readPRG(addr);
     }
+    return 0;
 }
 
 void bus::write(uint16_t addr, uint8_t val) {
@@ -60,7 +59,7 @@ void bus::write(uint16_t addr, uint8_t val) {
                 } else {
                     std::cout << "[NEMU] Error: No write callback registered for I/O register at: " << std::hex << +addr << std::endl;
                 }
-        } else if (addr < 0x4018 && addr >= 0x4014) { // IO
+        } else if (addr < 0x4017 && addr >= 0x4014) { // IO
             auto it = writeCallbacks.find(static_cast<IORegisters>(addr));
             if (it != writeCallbacks.end()) {
                 (it -> second)(val);

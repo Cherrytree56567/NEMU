@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\NEMU\build\CMakeFiles\b6f9fd25af1fec29441afa32fa332645\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{84968EE3-C52B-3CE1-9F21-8F7581192A7A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

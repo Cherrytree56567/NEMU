@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <iostream>
+#include <GLFW/glfw3.h>
 #include <cstdint>
 #include "../color/color.h"
 
@@ -15,4 +17,5 @@ private:
     float pixelSize;
 
     std::vector<Color> buffer;
+    GLFWwindow* window;
 };

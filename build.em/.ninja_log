@@ -1,0 +1,19 @@
+# ninja log v5
+112	4187	7562748949033481	CMakeFiles/nemu.dir/src/picturebus/picturebus.cpp.o	8cf46a696ee836e5
+57	4234	7562748949144509	CMakeFiles/nemu.dir/src/cpu/cpuopcodes.cpp.o	2bca9285c9aeb50c
+1	4255	7562748949004905	CMakeFiles/nemu.dir/src/Screen/Screen.cpp.o	df8b50ee5d502fbe
+41	4257	7562748949302817	CMakeFiles/nemu.dir/src/cartridge/cartridge.cpp.o	d553369a7120a71a
+88	4258	7562748949067973	CMakeFiles/nemu.dir/src/mapper/nrom/nrom.cpp.o	2a2515063b8f4003
+98	4262	7562748949033481	CMakeFiles/nemu.dir/src/mapper/mapper.cpp.o	ee5d252a2b263fec
+49	4268	7562748949623149	CMakeFiles/nemu.dir/src/cpu/cpu.cpp.o	16c5f819e35c8e42
+77	4321	7562748951193613	CMakeFiles/nemu.dir/src/main.cpp.o	13b774548ef538a0
+31	4465	7562748952680931	CMakeFiles/nemu.dir/src/bus/bus.cpp.o	9ee5eaea885d4da1
+4236	4544	7562748953726988	CMakeFiles/nemu.dir/src/range/range.cpp.o	679b5a9ad07f3ce1
+67	5597	7562748964239187	CMakeFiles/nemu.dir/src/emulator/emulator.cpp.o	564a96d79d71852f
+4193	6074	7562748969050558	CMakeFiles/nemu.dir/src/ppu/ppu.cpp.o	8c4ac2406a549fd8
+6075	8113	7562748988982242	nemu.js	a7ca0265ddb05db0
+9	2002	7562750883584463	CMakeFiles/nemu.dir/src/Screen/Screen.cpp.o	df8b50ee5d502fbe
+2003	7456	7562750937770821	nemu.js	a7ca0265ddb05db0
+26	2586	7562756235042731	CMakeFiles/nemu.dir/src/main.cpp.o	13b774548ef538a0
+61	2602	7562756235252796	CMakeFiles/nemu.dir/src/mapper/mapper.cpp.o	ee5d252a2b263fec
+2605	8489	7562756294004509	nemu.js	a7ca0265ddb05db0

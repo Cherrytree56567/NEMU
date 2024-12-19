@@ -1,6 +1,6 @@
 #include "emulator.h"
 
-emulator::emulator(std::string path) {
+emulator::emulator(std::string path) : screenScale(3.f) {
     pCartridge = std::make_shared<Cartridge>(path);
     pMapper = Mapper::createMapper(static_cast<MapperType>(pCartridge->getMapper()), *pCartridge.get());
     pScreen = std::make_shared<Screen>();
@@ -28,9 +28,12 @@ emulator::emulator(std::string path) {
         !pBus->setWriteCallback(OAMDATA, [&](uint8_t b) { pPpu->setOAMData(b); })) {
         std::cout << "[NEMU] Error: Failed to set I/O callbacks.\n";
     }
+
+    pPpu->setInterruptCallback([&](){ pCpu->interrupt(Interrupt::NMI); });
     
     pCpu->reset();
     pPpu->reset();
+    pScreen->create(NESVideoWidth, NESVideoHeight, screenScale, Color(255, 255, 255, 255));
     cycleTimer = std::chrono::high_resolution_clock::now();
     elapsedTime = cycleTimer - cycleTimer;
 }
@@ -53,7 +56,7 @@ bool emulator::loop() {
     pPpu->step();
     pCpu->step();
 
-    pScreen->draw();
+    //pScreen->draw();
     
     /*
     * TODO: Draw here using HTML canvas' and JS via WASM

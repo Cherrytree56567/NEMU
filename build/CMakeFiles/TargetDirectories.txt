@@ -1,3 +1,11 @@
 D:/NEMU/build/CMakeFiles/nemu.dir
+D:/NEMU/build/CMakeFiles/INSTALL.dir
 D:/NEMU/build/CMakeFiles/ALL_BUILD.dir
 D:/NEMU/build/CMakeFiles/ZERO_CHECK.dir
+D:/NEMU/build/glfw/CMakeFiles/uninstall.dir
+D:/NEMU/build/glfw/CMakeFiles/INSTALL.dir
+D:/NEMU/build/glfw/CMakeFiles/ALL_BUILD.dir
+D:/NEMU/build/glfw/src/CMakeFiles/glfw.dir
+D:/NEMU/build/glfw/src/CMakeFiles/update_mappings.dir
+D:/NEMU/build/glfw/src/CMakeFiles/INSTALL.dir
+D:/NEMU/build/glfw/docs/CMakeFiles/INSTALL.dir

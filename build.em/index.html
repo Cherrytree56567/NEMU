@@ -80,8 +80,9 @@
         imageData.data[i * 4 + 1] = color.g;   // Green channel
         imageData.data[i * 4 + 2] = color.b;   // Blue channel
         imageData.data[i * 4 + 3] = 255;       // Alpha channel (opaque)
+        
       }
-
+      console.log(pixels);
       ctx.putImageData(imageData, 0, 0);
     };
 

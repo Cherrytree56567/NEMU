@@ -2,8 +2,11 @@
 #include <memory>
 #include "emulator/emulator.h"
 
-int main() {
-    emulator emu("D:/NEMU/build/Debug/file.nes");
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        std::cout << "Please provide rom args.\n";
+    }
+    emulator emu(argv[1]);
     while (emu.loop()) {
         
     }
