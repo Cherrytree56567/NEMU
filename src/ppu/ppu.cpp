@@ -229,6 +229,8 @@ void PPU::step() {
                 }
             }
 
+            screen->draw();
+
         }
 
         break;
@@ -264,7 +266,7 @@ void PPU::writeOAM(uint8_t addr, uint8_t value) {
     spriteMemory[addr] = value;
 }
 
-void PPU::doDMA(uint8_t* page_ptr) {
+void PPU::doDMA(const uint8_t* page_ptr) {
     std::memcpy(spriteMemory.data() + spriteDataAddress, page_ptr, 256 - spriteDataAddress);
     if (spriteDataAddress) {
         std::memcpy(spriteMemory.data(), page_ptr + (256 - spriteDataAddress), spriteDataAddress);

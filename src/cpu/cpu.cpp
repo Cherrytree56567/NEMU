@@ -105,19 +105,6 @@ void cpu::step() {
         //std::cout << "[NEMU] ERROR: Unknown Opcode : " << std::hex << opcode << std::endl;
     }
     
-    std::cout << std::hex << std::uppercase << std::setfill('0')
-              << std::setw(4) << program_counter - 1 << "  "  // Log the current address (in hex)
-              << std::setw(2) << static_cast<int>(opcode) << " "  // Log the opcode byte
-              << std::setw(2) << static_cast<int>(opcode) << " "
-              << std::setw(2) << static_cast<int>(opcode) << " "
-              << currentINSTR << std::string(30 - currentINSTR.size(), ' ')   // Instruction name (currentINSTR)
-              << "A:" << std::setw(2) << static_cast<int>(accumulator)  // Accumulator value
-              << " X:" << std::setw(2) << static_cast<int>(x_reg)
-              << " Y:" << std::setw(2) << static_cast<int>(y_reg)
-              << " P:" << std::setw(2) << static_cast<int>(program_counter)
-              << " SP:" << std::setw(2) << static_cast<int>(stack_pointer)
-              << " PPU: 0, 0"  // Default PPU state
-              << " CYC:" << cycles << std::endl;
 }
 
 void cpu::interrupt(Interrupt type) {

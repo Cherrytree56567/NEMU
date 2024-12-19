@@ -55,6 +55,7 @@ bool emulator::loop() {
     pPpu->step();
     pPpu->step();
     pCpu->step();
+    pScreen->setPixel(9, 9, Color(24, 47, 31, 255));
 
     //pScreen->draw();
     
@@ -69,7 +70,7 @@ void emulator::DMA(uint8_t page) {
     pCpu->skipDMACycles();
     auto page_ptr = pBus->getPagePtr(page);
     if (page_ptr != nullptr) {
-        //pPpu->doDMA(page_ptr);
+        pPpu->doDMA(page_ptr);
     } else {
         std::cout << "[NEMU] Error: Cannot get pageptr for DMA.\n";
     }

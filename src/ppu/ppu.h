@@ -34,7 +34,7 @@ public:
  
     void setInterruptCallback(std::function<void(void)> cb);
 
-    void doDMA(uint8_t* page_ptr);
+    void doDMA(const uint8_t* page_ptr);
 
     void control(uint8_t ctrl);
     void setMask(uint8_t mask);
