@@ -100,9 +100,10 @@ void cpu::step() {
 
     if (CycleLength && (execute(opcode) || executeBranch(opcode) || executeType1(opcode) || executeType2(opcode) || executeType0(opcode))) {
         skipCycles += CycleLength;
+        std::cout << "[NEMU] INFO: Opcode : " << std::hex << opcode << std::endl;
     } else {
         currentINSTR = "UNKN";
-        //std::cout << "[NEMU] ERROR: Unknown Opcode : " << std::hex << opcode << std::endl;
+        std::cout << "[NEMU] ERROR: Unknown Opcode : " << std::hex << opcode << std::endl;
     }
     
 }

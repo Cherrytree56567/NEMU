@@ -1,0 +1,10 @@
+^D:\NEMU\BUILD\CMAKEFILES\B6F9FD25AF1FEC29441AFA32FA332645\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/NEMU -BD:/NEMU/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/NEMU/build/NEMU.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

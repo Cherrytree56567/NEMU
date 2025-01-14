@@ -1,0 +1,12 @@
+D:\NEMU\src\Cartridge\Cartridge.cpp;D:\NEMU\build\nemu.dir\Debug\Cartridge.obj
+D:\NEMU\src\Mapper\Mapper.cpp;D:\NEMU\build\nemu.dir\Debug\Mapper.obj
+D:\NEMU\src\Mapper\nrom\nrom.cpp;D:\NEMU\build\nemu.dir\Debug\nrom.obj
+D:\NEMU\src\Screen\Screen.cpp;D:\NEMU\build\nemu.dir\Debug\Screen.obj
+D:\NEMU\src\bus\bus.cpp;D:\NEMU\build\nemu.dir\Debug\bus.obj
+D:\NEMU\src\cpu\cpu.cpp;D:\NEMU\build\nemu.dir\Debug\cpu.obj
+D:\NEMU\src\cpu\cpuopcodes.cpp;D:\NEMU\build\nemu.dir\Debug\cpuopcodes.obj
+D:\NEMU\src\emulator\emulator.cpp;D:\NEMU\build\nemu.dir\Debug\emulator.obj
+D:\NEMU\src\main.cpp;D:\NEMU\build\nemu.dir\Debug\main.obj
+D:\NEMU\src\picturebus\picturebus.cpp;D:\NEMU\build\nemu.dir\Debug\picturebus.obj
+D:\NEMU\src\ppu\ppu.cpp;D:\NEMU\build\nemu.dir\Debug\ppu.obj
+D:\NEMU\src\range\range.cpp;D:\NEMU\build\nemu.dir\Debug\range.obj

@@ -49,6 +49,12 @@ uint8_t bus::read(uint16_t addr) {
 }
 
 void bus::write(uint16_t addr, uint8_t val) {
+    if (addr == 0x6000) {
+        std::cout << "[NEMU] INFO: Test Results = " << std::hex << val << std::endl;
+    }
+    if (addr == 0x6001) {
+        std::cout << "[NEMU] INFO: Test Results = " << std::hex << val << std::endl;
+    }
     if (addr < 0x2000) { // RAM
         ram[addr & Ram.end] = val;
     } else if (addr < 0x4020) { // PPU and IO 

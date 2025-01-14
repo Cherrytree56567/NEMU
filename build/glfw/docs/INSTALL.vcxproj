@@ -1,54 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <PreferredToolArchitecture>x86</PreferredToolArchitecture>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|win32">
+    <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
-      <Platform>win32</Platform>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|win32">
+    <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
-      <Platform>win32</Platform>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="MinSizeRel|win32">
+    <ProjectConfiguration Include="MinSizeRel|x64">
       <Configuration>MinSizeRel</Configuration>
-      <Platform>win32</Platform>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="RelWithDebInfo|win32">
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
       <Configuration>RelWithDebInfo</Configuration>
-      <Platform>win32</Platform>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BCEA4845-CC68-3C7A-8644-8CE746037AFE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
-    <Platform>win32</Platform>
+    <Platform>x64</Platform>
     <ProjectName>INSTALL</ProjectName>
     <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -59,17 +59,17 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PostBuildEvent>
       <UseUtf8Encoding>Always</UseUtf8Encoding>
       <Message></Message>
       <Command>setlocal
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DBUILD_TYPE=$(Configuration) -P cmake_install.cmake
+"C:\Program Files\CMake\bin\cmake.exe" -DBUILD_TYPE=$(Configuration) -P cmake_install.cmake
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -79,12 +79,12 @@ exit /b %1
 if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PostBuildEvent>
       <UseUtf8Encoding>Always</UseUtf8Encoding>
       <Message></Message>
       <Command>setlocal
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DBUILD_TYPE=$(Configuration) -P cmake_install.cmake
+"C:\Program Files\CMake\bin\cmake.exe" -DBUILD_TYPE=$(Configuration) -P cmake_install.cmake
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -94,12 +94,12 @@ exit /b %1
 if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <PostBuildEvent>
       <UseUtf8Encoding>Always</UseUtf8Encoding>
       <Message></Message>
       <Command>setlocal
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DBUILD_TYPE=$(Configuration) -P cmake_install.cmake
+"C:\Program Files\CMake\bin\cmake.exe" -DBUILD_TYPE=$(Configuration) -P cmake_install.cmake
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -109,12 +109,12 @@ exit /b %1
 if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <PostBuildEvent>
       <UseUtf8Encoding>Always</UseUtf8Encoding>
       <Message></Message>
       <Command>setlocal
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DBUILD_TYPE=$(Configuration) -P cmake_install.cmake
+"C:\Program Files\CMake\bin\cmake.exe" -DBUILD_TYPE=$(Configuration) -P cmake_install.cmake
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -126,9 +126,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <CustomBuild Include="D:\NEMU\build\CMakeFiles\de589653bcf70799f7740e1607178dbc\INSTALL_force.rule">
-      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|win32'"> </Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">setlocal
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 cd .
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
@@ -137,13 +137,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">D:\NEMU\build\glfw\docs\CMakeFiles\INSTALL_force</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">false</LinkObjects>
-      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">false</VerifyInputsAndOutputsExist>
-      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|win32'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|win32'"> </Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|win32'">setlocal
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\NEMU\build\glfw\docs\CMakeFiles\INSTALL_force</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VerifyInputsAndOutputsExist>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'"> </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 cd .
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
@@ -152,13 +152,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|win32'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|win32'">D:\NEMU\build\glfw\docs\CMakeFiles\INSTALL_force</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|win32'">false</LinkObjects>
-      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Release|win32'">false</VerifyInputsAndOutputsExist>
-      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'"> </Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'">setlocal
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\NEMU\build\glfw\docs\CMakeFiles\INSTALL_force</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</VerifyInputsAndOutputsExist>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'"> </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
 cd .
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
@@ -167,13 +167,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'">D:\NEMU\build\glfw\docs\CMakeFiles\INSTALL_force</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'">false</LinkObjects>
-      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'">false</VerifyInputsAndOutputsExist>
-      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'"> </Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'">setlocal
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\NEMU\build\glfw\docs\CMakeFiles\INSTALL_force</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</VerifyInputsAndOutputsExist>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'"> </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
 cd .
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
@@ -182,12 +182,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'">D:\NEMU\build\glfw\docs\CMakeFiles\INSTALL_force</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'">false</LinkObjects>
-      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'">false</VerifyInputsAndOutputsExist>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\NEMU\build\glfw\docs\CMakeFiles\INSTALL_force</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</VerifyInputsAndOutputsExist>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="D:\NEMU\build\ZERO_CHECK.vcxproj">
       <Project>{6C7EFB43-730A-36B1-8A0A-293DE3962C14}</Project>
